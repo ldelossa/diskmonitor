@@ -1,0 +1,14 @@
+{
+  "email_config": {
+    "fromaddr": "LS.Alerting.System@gmail.com",
+    "toaddr": "ldelossa.ld@gmail.com",
+    "username": "LS.Alerting.System@gmail.com",
+    "password": "@lerting101",
+    "smtp_server": "smtp.gmail.com:587"
+  },
+  "monitor_config": {
+    "read_time_threshold": 1500,
+    "write_time_threshold": 1500,
+    "poll_interval": 10
+  }
+}
