@@ -1,5 +1,4 @@
 from diskmonitor.disk import Disk
-from time import sleep
 from socket import gethostname
 from datetime import datetime
 from os import uname
@@ -39,13 +38,7 @@ class Monitor(object):
                          'time': self._last_poll_datetime.strftime('%b, %a %Y %H:%M:%S')}
 
                 self._append_metrics_to_que(alert)
-
-                self.email_client.set_message(alert)
-                # self.email_client.send_mail()
-                print(alert)
-            else:
-                print('No alerts!')
-
+                self.email_client.append_to_message_q(alert)
         return
 
     def _append_metrics_to_que(self, alert):
@@ -56,14 +49,8 @@ class Monitor(object):
             if (self._last_poll_datetime is None):
                 self._check()
             elif ((datetime.now() - self._last_poll_datetime).total_seconds() >= self.poll_interval):
-                print('Interval up!')
+                # print('Interval up!')
                 self._check()
-
-
-        #
-        # while True:
-        #     self._check()
-        #     sleep(self.poll_interval)
 
 
 
