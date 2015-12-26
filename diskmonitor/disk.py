@@ -1,15 +1,21 @@
 import psutil
+from diskmonitor.functions import diskstats_parse
+from diskmonitor.collectd_iostat_python import IOStat
 
 class Disk(object):
     def __init__(self, disk_name):
         self.disk_name = disk_name
         self.read_time = None
         self.write_time = None
+        self.current_ios = None
+        self.metrics = None
+        self.iometrics = None
+        self._iostats = IOStat(disks=[disk_name])
 
     def poll(self):
-        metrics = psutil.disk_io_counters(perdisk=True)[self.disk_name]
-        self.read_time = metrics.read_time
-        self.write_time = metrics.write_time
+        self.iometrics = self._iostats.get_diskstats()
+
+
 
 
 

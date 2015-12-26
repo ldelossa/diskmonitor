@@ -1,25 +1,37 @@
-import psutil
-from diskmonitor.emailer import Emailer
-from diskmonitor import Monitor
 
-def extract_disk_names():
-    return [disk for disk in psutil.disk_io_counters(perdisk=True)]
+def diskstats_parse(dev=None):
+    file_path = '/proc/diskstats'
+    result = {}
 
-def launch_monitor(*, disk_obj, read_time_threshold, write_time_threshold, poll_interval,
-                   fromaddr, toaddr, username, password, smtp_server):
-    email_client = Emailer(fromaddr=fromaddr,
-                           toaddr=toaddr,
-                           username=username,
-                           password=password,
-                           smtpserver=smtp_server)
+    # ref: http://lxr.osuosl.org/source/Documentation/iostats.txt
+    columns_disk = ['m', 'mm', 'dev', 'reads', 'rd_mrg', 'rd_sectors',
+                    'ms_reading', 'writes', 'wr_mrg', 'wr_sectors',
+                    'ms_writing', 'cur_ios', 'ms_doing_io', 'ms_weighted']
 
-    monitor = Monitor(disk_name=disk_obj,
-                      read_time_threshold=read_time_threshold,
-                      write_time_threshold=write_time_threshold,
-                      poll_interval=poll_interval,
-                      email_client=email_client)
+    columns_partition = ['m', 'mm', 'dev', 'reads', 'rd_sectors', 'writes', 'wr_sectors']
 
-    monitor.start_monitor()
+    lines = open(file_path, 'r').readlines()
+    for line in lines:
+        if line == '': continue
+        split = line.split()
+        if len(split) == len(columns_disk):
+            columns = columns_disk
+        elif len(split) == len(columns_partition):
+            columns = columns_partition
+        else:
+            # No match
+            continue
+
+        data = dict(zip(columns, split))
+        if dev != None and dev != data['dev']:
+            continue
+        for key in data:
+            if key != 'dev':
+                data[key] = int(data[key])
+        result[data['dev']] = data
+
+    return result
+
 
 
 

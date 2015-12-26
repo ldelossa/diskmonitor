@@ -17,3 +17,12 @@ class Emailer(object):
         server.login(self.username, self.password)
         server.sendmail(self.fromaddr, self.toaddrs, self.msg)
         server.quit()
+
+    def set_message(self, alert):
+        self.msg = '{} alerted on metric: {} on disk: {}! Current value: {}. Threshold: {}'.format(
+                                                                                      alert['hostname'],
+                                                                                      alert['metric'],
+                                                                                      alert['dev'],
+                                                                                      alert['current_value'],
+                                                                                      alert['threshold'],
+                                                                                        )

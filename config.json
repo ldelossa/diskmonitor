@@ -1,14 +1,32 @@
 {
   "email_config": {
     "fromaddr": "LS.Alerting.System@gmail.com",
-    "toaddr": "ldelossa.ld@gmail.com",
+    "toaddr": "louis.delos@gmail.com",
     "username": "LS.Alerting.System@gmail.com",
     "password": "@lerting101",
     "smtp_server": "smtp.gmail.com:587"
   },
   "monitor_config": {
-    "read_time_threshold": 1500,
-    "write_time_threshold": 1500,
-    "poll_interval": 10
+    "poll_interval": 5
+  },
+  "io_thresholds": {
+    "%util": 9999,
+    "wkB/s": 0,
+    "rrqm/s": 9999,
+    "rkB/s": 9999,
+    "kB_wrtn/s": 9999,
+    "tps": 9999,
+    "r_await": 9999,
+    "svctm": 9999,
+    "kB_read": 9999,
+    "kB_wrtn": 9999,
+    "avgqu-sz": 0,
+    "w_await": 9999,
+    "w/s": 9999,
+    "r/s": 9999,
+    "await": 9999,
+    "wrqm/s": 9999,
+    "avgrq-sz": 9999,
+    "kB_read/s": 0.0
   }
 }
