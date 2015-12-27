@@ -1,4 +1,3 @@
-import psutil
 import json
 import sys
 import cmd
@@ -7,6 +6,10 @@ from diskmonitor.emailer import Emailer
 from threading import Thread
 from collections import deque
 from diskmonitor.collectd_iostat_python import IOStat
+
+from operator import itemgetter
+from itertools import groupby
+from collections import defaultdict
 
 def extract_disk_names():
     iostats = IOStat().get_diskstats()
@@ -20,15 +23,28 @@ def launch_monitor(disk_name, config_file, q, email_client):
     return
 
 def dump_metrics(q):
-    for alert in q:
-        print(alert)
+    alerts = [alert for alert in q]
+
+    # alerts.sort(key=itemgetter('time'))
+    #
+    # for time, items in groupby(alerts, key=itemgetter('time')):
+    #     print(time)
+    #     for i in items:
+    #         print('     ', i)
+
+    rows_by_dev = defaultdict(list)
+    for alert in alerts:
+        rows_by_dev[alert['dev']].append(alert)
+
+    for a in rows_by_dev['sda']:
+        print(a)
 
 class DiskMonitor_CMD(cmd.Cmd):
 
     def do_exit(self, rest=None):
         sys.exit(1)
 
-    def do_dump_metrics(self, rest=None):
+    def do_dump_metrics(self, rest=None,):
         dump_metrics(metrics_q)
 
 
@@ -44,7 +60,6 @@ if __name__ == "__main__":
 
     #initiate email client
     email = Emailer(config=config, msg=None)
-    print('emailer started')
     t = Thread(target=email.start_client, daemon=True)
     t.start()
 
