@@ -2,6 +2,10 @@
 
 Diskmonitor is a tool for monitoring disk io and alerting on events. The implementation uses python3.4, a hacked up version of collectd_iostat_python module, multi-threading (soon to be multiprocessing) and several internal queues.
 
+### Requirements
+  - Python3.4 (Python3 should work also)
+  - Sysstat tools (provides iostat)
+
 ### Functionality
   - Diskmonitor can be used as a long running program
   - Diskmonitor is capable of sending aggregated emails of alerts.
@@ -41,3 +45,5 @@ All configuration is done from config.json in the root of the pckage. You are ab
 - Docuement CLI commands 
 - RabbitMQ plugin
 - Introduce daemon or detached mode for running as a service 
+
+Project has been tested on Ubuntu 14.04 and CentOS-7
