@@ -1,11 +1,11 @@
 {
   "email_config": {
-    "fromaddr": " ",
-    "toaddr": " ",
-    "subject": " ",
-    "username": " ",
-    "password": " ",
-    "smtp_server": " ",
+    "fromaddr": null,
+    "toaddr": null,
+    "subject": null,
+    "username": null,
+    "password": null,
+    "smtp_server": null,
     "send_interval": 60
   },
   "monitor_config": {

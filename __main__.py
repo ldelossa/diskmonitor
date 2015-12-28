@@ -28,6 +28,10 @@ if __name__ == "__main__":
     with open(filename) as f:
         config = json.load(f)
 
+    if any([v is None for k, v in config['email_config'].items()]):
+        print('Email configuration not set')
+        sys.exit(1)
+
     # create queues
     alerts_q = deque(maxlen=15)
     metrics_q = deque(maxlen=150)
