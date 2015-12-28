@@ -15,6 +15,8 @@ Diskmonitor uses multi-threading and multiple queues as it's architectural found
 v1.2
 
 ### Usage
+Be sure to fill in the email section in config.json
+
 ```
 root# python3.4 /path/to/diskmonitor
 ```
