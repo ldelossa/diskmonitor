@@ -1,11 +1,12 @@
 {
   "email_config": {
-    "fromaddr": "LS.Alerting.System@gmail.com",
-    "toaddr": "louis.delos@gmail.com",
-    "subject": "LS Alerting",
-    "username": "LS.Alerting.System@gmail.com",
-    "password": "@lerting101",
-    "smtp_server": "smtp.gmail.com:587"
+    "fromaddr": " ",
+    "toaddr": " ",
+    "subject": " ",
+    "username": " ",
+    "password": " ",
+    "smtp_server": " ",
+    "send_interval": 60
   },
   "monitor_config": {
     "poll_interval": 5

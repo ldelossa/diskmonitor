@@ -1,8 +1,9 @@
-import psutil
-from diskmonitor.functions import diskstats_parse
 from diskmonitor.collectd_iostat_python import IOStat
 
 class Disk(object):
+    """
+    Disk object - polls IOstat for metrics. This object is instantiated by each Monitor object.
+    """
     def __init__(self, disk_name):
         self.disk_name = disk_name
         self.read_time = None

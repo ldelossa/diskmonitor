@@ -1,80 +1,49 @@
 import json
 import sys
 import cmd
-from diskmonitor import Monitor
+from os import path
 from diskmonitor.emailer import Emailer
+from diskmonitor.functions import *
 from threading import Thread
 from collections import deque
-from diskmonitor.collectd_iostat_python import IOStat
 
-from operator import itemgetter
-from itertools import groupby
-from collections import defaultdict
-
-def extract_disk_names():
-    iostats = IOStat().get_diskstats()
-    return [disk_name for disk_name in iostats]
-
-
-def launch_monitor(disk_name, config_file, q, email_client):
-    # email_client = Emailer(config=config_file)
-    monitor = Monitor(disk_name=disk_name, config=config_file, email_client=email_client, metrics_que=q)
-    monitor.start_monitor()
-    return
-
-def dump_metrics(q):
-    alerts = [alert for alert in q]
-
-    # alerts.sort(key=itemgetter('time'))
-    #
-    # for time, items in groupby(alerts, key=itemgetter('time')):
-    #     print(time)
-    #     for i in items:
-    #         print('     ', i)
-
-    rows_by_dev = defaultdict(list)
-    for alert in alerts:
-        rows_by_dev[alert['dev']].append(alert)
-
-    for a in rows_by_dev['sda']:
-        print(a)
 
 class DiskMonitor_CMD(cmd.Cmd):
 
     def do_exit(self, rest=None):
         sys.exit(1)
 
-    def do_dump_metrics(self, rest=None,):
+    def do_dump_alerts(self, disk_input=None, rest=None,):
+        dump_alerts(alerts_q, disk_input)
+
+    def do_dump_metrics(self, rest=None):
         dump_metrics(metrics_q)
 
 
 if __name__ == "__main__":
 
-    #load in json configuration file
-    with open('config.json') as f:
+    # load in json configuration file
+    dir = path.dirname(__file__)
+    filename = path.join(dir, 'config.json')
+    with open(filename) as f:
         config = json.load(f)
 
-    metrics_q = deque(maxlen=15)
+    # create queues
+    alerts_q = deque(maxlen=15)
+    metrics_q = deque(maxlen=150)
 
+    # obtain disks on system
     disks = extract_disk_names()
 
-    #initiate email client
+    # initiate email client
     email = Emailer(config=config, msg=None)
     t = Thread(target=email.start_client, daemon=True)
     t.start()
 
+    # initiate monitors
     for disk in disks:
-        t = Thread(target=launch_monitor, args=(disk, config, metrics_q, email), daemon=True,)
+        t = Thread(target=launch_monitor, args=(disk, config, email, alerts_q, metrics_q), daemon=True, )
         t.start()
 
-
-
-    # while True:
-    #     command = input("Monitor Started, type exit to quit\n")
-    #     if command == "exit":
-    #         sys.exit(1)
-    #
-    #     if command == "dump-metrics":
-    #         dump_metrics(metrics_q)
-
+    # command line loop
     DiskMonitor_CMD().cmdloop()
