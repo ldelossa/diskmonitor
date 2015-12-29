@@ -71,7 +71,7 @@ class Manager(object):
         :param disk: string - disk
         :return:
         """
-        self._control_q.append({disk: 'exit'})
+        self._control_q.append({disk: 'exit'}) # change datastructure to multi-dict
         for monitor in self._monitors:
             for d, thread in monitor.items():
                 if d == disk:
