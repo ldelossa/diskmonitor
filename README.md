@@ -65,7 +65,7 @@ Number of monitors running 0
 (Cmd) 
 ```
 
-diskmonit will not let you monitor the same disks twice.
+diskmonitor will not let you monitor the same disks twice.
 
 ```
 (Cmd) launch_monitor all
