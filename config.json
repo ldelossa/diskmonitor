@@ -1,11 +1,11 @@
 {
   "email_config": {
-    "fromaddr": null,
-    "toaddr": null,
-    "subject": null,
-    "username": null,
-    "password": null,
-    "smtp_server": null,
+    "fromaddr": "ls.alerting.system@gmail.com",
+    "toaddr": "ldelossa.ld@gmail.com",
+    "subject": "ls-alerting",
+    "username": "ls.alerting.system@gmail.com",
+    "password": "@lerting101",
+    "smtp_server": "smtp.gmail.com:587",
     "send_interval": 60
   },
   "monitor_config": {

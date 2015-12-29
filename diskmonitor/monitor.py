@@ -77,7 +77,7 @@ class Monitor(object):
                              'threshold': self._config['io_thresholds'][key],
                              'hostname': self.hostname,
                              'time': self._last_poll_datetime.strftime('%b, %a %Y %H:%M:%S')}
-
+                    print(alert)
                     self._append_to_que(alert, 'alert')
                     self._append_to_que(alert, 'email')
             except LookupError:

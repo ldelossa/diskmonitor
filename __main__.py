@@ -4,6 +4,7 @@ import cmd
 from os import path
 from diskmonitor.emailer import Emailer
 from diskmonitor.functions import *
+from diskmonitor.manager import Manager
 from threading import Thread
 from collections import deque
 
@@ -14,10 +15,10 @@ class DiskMonitor_CMD(cmd.Cmd):
         sys.exit(1)
 
     def do_dump_alerts(self, disk_input=None, rest=None,):
-        dump_alerts(alerts_q, disk_input)
+        manager.dump_alerts(disk_input)
 
     def do_dump_metrics(self, rest=None):
-        dump_metrics(metrics_q)
+        manager.dump_monitors()
 
 
 if __name__ == "__main__":
@@ -32,22 +33,28 @@ if __name__ == "__main__":
         print('Email configuration not set')
         sys.exit(1)
 
-    # create queues
-    alerts_q = deque(maxlen=15)
-    metrics_q = deque(maxlen=150)
+    # # create queues
+    # alerts_q = deque(maxlen=15)
+    # metrics_q = deque(maxlen=150)
 
     # obtain disks on system
     disks = extract_disk_names()
 
-    # initiate email client
-    email = Emailer(config=config, msg=None)
-    t = Thread(target=email.start_client, daemon=True)
-    t.start()
 
-    # initiate monitors
-    for disk in disks:
-        t = Thread(target=launch_monitor, args=(disk, config, email, alerts_q, metrics_q), daemon=True, )
-        t.start()
+    # # initiate email client
+    # email = Emailer(config=config, msg=None)
+    # t = Thread(target=email.start_client, daemon=True)
+    # t.start()
+
+    # # initiate monitors
+    # for disk in disks:
+    #     t = Thread(target=launch_monitor, args=(disk, config, email, alerts_q, metrics_q), daemon=True, )
+    #     t.start()
+
+    # initiate manager
+    manager = Manager(disks, config)
+    manager.launch_monitors()
+
 
     # command line loop
     DiskMonitor_CMD().cmdloop()

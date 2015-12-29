@@ -12,7 +12,7 @@ def extract_disk_names():
     return [disk_name for disk_name in iostats]
 
 
-def launch_monitor(disk_name, config_file, email_client, alerts_q, metrics_q):
+def launch_monitor(*, disk_name, config_file, email_client, alerts_q, metrics_q):
     """
     Defines method for launching a Monitor. This is used as a target for the thread Class
     :param disk_name: String - a disk name returned by 'extract_disk_names()'
