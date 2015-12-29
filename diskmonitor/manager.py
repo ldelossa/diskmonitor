@@ -75,7 +75,6 @@ class Manager(object):
         for monitor in self._monitors:
             for d, thread in monitor.items():
                 if d == disk:
-                    print('d verified')
                     while thread.isAlive():
                         pass
                     self._monitors.remove(monitor)

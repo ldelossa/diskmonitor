@@ -38,7 +38,6 @@ class DiskMonitor_CMD(cmd.Cmd):
         if disk_input is None:
             print('No monitor supplied')
         else:
-            print(disk_input)
             manager.stop_monitor(disk_input)
             # else:
             #     print('Disk not recognized')
