@@ -42,7 +42,7 @@ After running the diskmonitor package a cmd prompt will be presented. You have t
 | dump_metrics | dumps raw metrics (not sorted)  | None								       | 
 | dump_alerts  | dumps alerts (sorted)           | Disk name returned from list_disks				       |
 | dump_monitors| displays active monitors        | None								       |
-| launch_monitor | launches a monitor            | disk name returnedfrom list_disks | all			       |
+| launch_monitor | launches a monitor            | disk name returned from list_disks or all			       |
 | stop_monitor | stops a monitor                 | Requires a disk name                                                |
 | list_disks   | lists disks available to monitor| None								       |
 
