@@ -6,7 +6,7 @@ class Monitor(object):
     """
     Monitor object - performs the polling of disk objects, checking of thresholds, and alerting
     """
-    def __init__(self, *, disk_name, config, email_client, alerts_que, metrics_que):
+    def __init__(self, *, disk_name, config, email_client, alerts_que, metrics_que, control_que):
         self.hostname = uname()[1]
         self.monitored_disk = disk_name
         self.disk = Disk(self.monitored_disk)
@@ -14,9 +14,11 @@ class Monitor(object):
         self._disk_up = True
         self._alerts_que = alerts_que
         self._metrics_que = metrics_que
+        self._control_que = control_que
         self._poll_interval = config['monitor_config']['poll_interval']
         self._config = config
         self._last_poll_datetime = None
+
 
     def _check(self):
         """
@@ -29,7 +31,7 @@ class Monitor(object):
 
         self.disk.poll()
         self._last_poll_datetime = datetime.now()
-        # append time and dev to
+        # for later sorting implementation
         self.disk.iometrics[self.monitored_disk]['time'] = self._last_poll_datetime
         self._append_to_que(self.disk.iometrics, 'metric')
 
@@ -77,7 +79,7 @@ class Monitor(object):
                              'threshold': self._config['io_thresholds'][key],
                              'hostname': self.hostname,
                              'time': self._last_poll_datetime.strftime('%b, %a %Y %H:%M:%S')}
-                    print(alert)
+                    # print(alert)
                     self._append_to_que(alert, 'alert')
                     self._append_to_que(alert, 'email')
             except LookupError:
@@ -104,15 +106,35 @@ class Monitor(object):
 
     def start_monitor(self):
         """
-        Starts monitor, checks current datetime with self._last_poll_datetime, if interval is up performs check
+        Starts monitor, checks current datetime with self._last_poll_datetime, if interval is up performs check. Also,
+        check control_q, if message is on queue, pop it off, check if it's for this monitor, if not, place back on queue
         :return: None
         """
-        while True:
+        run = True
+        while run is True:
             if (self._last_poll_datetime is None):
                 self._check()
+                if len(self._control_que) > 0:
+                    message = self._control_que.pop()
+                    for k, v in message.items():
+                        if k == self.monitored_disk and v == 'exit':
+                            run = False
+                            print(self.monitored_disk, 'shutting down')
+                        else:
+                            self._control_que.append(message)
+
             elif ((datetime.now() - self._last_poll_datetime).total_seconds() >= self._poll_interval):
                 self._check()
+                if len(self._control_que) > 0:
+                    message = self._control_que.pop()
+                    for k, v in message.items():
+                        if k == self.monitored_disk and v == 'exit':
+                            run = False
+                            print(self.monitored_disk, 'shutting down')
+                        else:
+                            self._control_que.append(message)
         return
+
 
 
 

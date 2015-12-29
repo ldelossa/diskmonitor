@@ -68,6 +68,7 @@ class IOStat(object):
           avgqu-sz  await  svctm  %util
         See I{man iostat} for more details.
         """
+        # made edits to original code here to output string values instead of bytes
         dstats = {}
         dsi = input.rfind('Device:'.encode())
         if dsi == -1:
