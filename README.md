@@ -94,14 +94,12 @@ All configuration is done from config.json in the root of the pckage. You are ab
 - Introduce some form of data persistence to make alerting more accurate
 - Docuement CLI commands 
 - RabbitMQ plugin
-- Introduce daemon or detached mode for running as a service 
-
-Project has been tested on Ubuntu 14.04 and CentOS-7
-=======
+- Introduce daemon or detached mode for running as a service
 - ~~Introduce daemon or detached mode for running as a service~~
 - Incorporate disk space monitoring
 - Move to multi-processing (see if more cpu efficient first)
 - Efficiently sort metrics dump
 - Add queue max's to json configuration
 - Heavy CPU optimization (been looking for a reason to look at Cython
->>>>>>> thread_manager
+
+Project has been tested on Ubuntu 14.04 and CentOS 7.
