@@ -61,10 +61,9 @@ if __name__ == "__main__":
                         help="Runs as daemon with no cli")
     args = parser.parse_args()
 
-
     # load in json configuration file
-    dir = path.dirname(__file__)
-    filename = path.join(dir, 'config.json')
+    directory = path.dirname(__file__)
+    filename = path.join(directory, 'config.json')
     with open(filename) as f:
         config = json.load(f)
 
@@ -73,7 +72,7 @@ if __name__ == "__main__":
         print('Email configuration not set')
         sys.exit(1)
 
-    # find didks on system
+    # find disks on system
     disks = extract_disk_names()
 
     # start monitor manager
