@@ -1,6 +1,7 @@
 from diskmonitor.disk import Disk
 from datetime import datetime
 from os import uname
+from time import sleep
 
 class Monitor(object):
     """
@@ -111,6 +112,7 @@ class Monitor(object):
         :return: None
         """
         run = True
+        # first case where _last_poll_date is not set
         while run is True:
             if (self._last_poll_datetime is None):
                 self._check()
@@ -135,6 +137,7 @@ class Monitor(object):
                             print(self.monitored_disk, 'shutting down')
                         else:
                             self._control_que.append(message)
+            sleep(0.1)
         return
 
 

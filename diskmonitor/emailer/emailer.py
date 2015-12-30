@@ -72,7 +72,7 @@ class Emailer(object):
                 self.set_message()
                 self.send_mail()
                 # print('sent email!')
-                sleep(self._config['email_config']['send_interval'])
+            sleep(self._config['email_config']['send_interval'])
 
 
 

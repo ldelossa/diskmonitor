@@ -96,7 +96,8 @@ class Manager(object):
         """
         print("Number of monitors running {}:\n".format(len(self._monitors)))
         if len(self._monitors) > 0:
-            print(self._monitors + "\n")
+            print(self._monitors)
+            print("\n")
 
     def dump_alerts(self, disk):
         """

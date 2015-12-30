@@ -14,7 +14,13 @@ Diskmonitor is a tool for monitoring disk io and alerting on events. The impleme
 Diskmonitor uses multi-threading and multiple queues as it's architectural foundation. Each monitor object is responsible for monitoring a disk. Each alert, metric, and email is sent to their own queus. Three queues exist in total (email, metrics, and alerts). Diskmonitor also provides a (limited for now) CLI. You are able to exit, dump your alerts, and dump your raw metrics
 
 ### Version
-v2.0
+v2.1
+
+### Changes
+
+ - Massive CPU utilization improvements. Now runs idle at 0.0% and runs with 3 monitors (tested) at 0.3%
+ - Fixed bug in emailer class
+ - various data structure improvements.
 
 ### Usage
 Be sure to fill in the email section in config.json or diskmonitor will not start!!
