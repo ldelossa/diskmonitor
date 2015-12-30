@@ -94,7 +94,6 @@ All configuration is done from config.json in the root of the pckage. You are ab
 - Introduce some form of data persistence to make alerting more accurate
 - Docuement CLI commands 
 - RabbitMQ plugin
-<<<<<<< HEAD
 - Introduce daemon or detached mode for running as a service 
 
 Project has been tested on Ubuntu 14.04 and CentOS-7

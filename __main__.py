@@ -6,6 +6,7 @@ from os import path
 from diskmonitor.functions import *
 from diskmonitor.manager import Manager
 from diskmonitor.daemon3x import daemon
+from time import sleep
 import argparse
 
 
@@ -50,7 +51,7 @@ class Daemon(daemon):
     def run(self):
         manager.launch_monitors()
         while True:
-            pass
+            sleep(0.1)
 
 if __name__ == "__main__":
 
