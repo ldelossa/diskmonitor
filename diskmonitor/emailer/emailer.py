@@ -71,8 +71,8 @@ class Emailer(object):
             if len(self._message_que) >= 1:
                 self.set_message()
                 self.send_mail()
-                print('sent email!')
-                sleep(self._config['email_config']['send_interval'])
+                # print('sent email!')
+            sleep(self._config['email_config']['send_interval'])
 
 
 
