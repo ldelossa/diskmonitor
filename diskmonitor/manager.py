@@ -16,7 +16,7 @@ class Manager(object):
         :return:
         """
         self._disks = disks
-        self._monitors = []
+        self._monitors = {}
         self._config = config
         self._email_client = Emailer(config=self._config)
         self._alerts_q = deque()
@@ -47,12 +47,12 @@ class Manager(object):
         :return:
         """
         if disk:
-            for monitor in self._monitors:
-                if any([disk == d for d in monitor]):
+            for key in self._monitors:
+                if disk == key:
                     print('Monitor for {} is already running \n'.format(disk))
                     return
             t = Thread(target=self._launch, args=(disk,), name=disk, daemon=True)
-            self._monitors.append({disk: t})
+            self._monitors[disk] = t
             t.start()
 
         else:
@@ -61,7 +61,7 @@ class Manager(object):
                 return
             for disk in self._disks:
                 t = Thread(target=self._launch, args=(disk,), name=disk, daemon=True)
-                self._monitors.append({disk: t})
+                self._monitors[disk] = t
                 t.start()
 
     def stop_monitor(self, disk):
@@ -71,24 +71,32 @@ class Manager(object):
         :param disk: string - disk
         :return:
         """
-        self._control_q.append({disk: 'exit'}) # change datastructure to multi-dict
-        for monitor in self._monitors:
-            for d, thread in monitor.items():
-                if d == disk:
-                    while thread.isAlive():
-                        pass
-                    self._monitors.remove(monitor)
-                else:
-                    return
+        if any([disk == d for d in self._monitors]):
+            self._control_q.append({disk: 'exit'})
+
+            while self._monitors[disk].isAlive():
+                pass
+            del self._monitors[disk]
+
+
+        # self._control_q.append({disk: 'exit'})
+        # for monitor in self._monitors:
+        #     for d, thread in monitor.items():
+        #         if d == disk:
+        #             while thread.isAlive():
+        #                 pass
+        #             self._monitors.remove(monitor)
+        #         else:
+        #             return
 
     def dump_monitors(self):
         """
         Dumps monitors registered with manager
         :return:
         """
-        print("Number of monitors running {} \n".format(len(self._monitors)))
-        for monitor in self._monitors:
-            print(monitor)
+        print("Number of monitors running {}:\n".format(len(self._monitors)))
+        if len(self._monitors) > 0:
+            print(self._monitors + "\n")
 
     def dump_alerts(self, disk):
         """

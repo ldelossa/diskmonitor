@@ -126,7 +126,9 @@ class Monitor(object):
             elif ((datetime.now() - self._last_poll_datetime).total_seconds() >= self._poll_interval):
                 self._check()
                 if len(self._control_que) > 0:
+
                     message = self._control_que.pop()
+
                     for k, v in message.items():
                         if k == self.monitored_disk and v == 'exit':
                             run = False
