@@ -44,7 +44,7 @@ Diskmonitor will respond correctly to SIGTERM signals and remove it's PID file.
 
 
 ### CLI
-After running the diskmonitor package a cmd prompt will be presented. You have three options for now
+After running the diskmonitor package a cmd prompt will be presented. You have several options for now
  
 | Command      | Purpose                         | Arguments
 | ------------ | --------------------------------|---------------------------------------------------------------------|
